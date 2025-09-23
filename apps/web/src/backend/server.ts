@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { supabase } from './config/supabase';
+import { userService } from './services/userService'; // Make sure this path is correct
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -48,12 +49,38 @@ app.get('/api/db-test', async (_, res) => {
   }
 });
 
+app.post('/api/users', async (req, res) => {
+  try {
+    const user = await userService.createUser(req.body);
+    res.json(user);
+  } catch (error) {
+    console.error('Create user error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Failed to create user'
+    });
+  }
+});
+
+// List users
+app.get('/api/users', async (_, res) => {
+  try {
+    const users = await userService.listUsers();
+    res.json(users);
+  } catch (error) {
+    console.error('List users error:', error);
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Failed to list users'
+    });
+  }
+});
+
 export const startServer = () => {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log('Test endpoints:');
     console.log('- http://localhost:3001/api/health');
     console.log('- http://localhost:3001/api/test');
-    console.log('- http://localhost:3001/api/db-test  <- Test database connection');
+    console.log('- http://localhost:3001/api/db-test');
+    console.log('- http://localhost:3001/api/users [GET, POST]');
   });
 };
