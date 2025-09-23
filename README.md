@@ -7,5 +7,8 @@ cd apps/web
 # Install dependencies
 npm install
 
-# Start the dev server
+# Start the dev server 
 npm run dev
+
+# Start db and backend server
+npm run server
