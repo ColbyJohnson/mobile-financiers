@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import { supabase } from './config/supabase';
 import { userService } from './services/userService'; // Make sure this path is correct
+import { plaidClient } from './config/plaid';
+import type { CountryCode } from 'plaid'; // Import CountryCode type
+
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -74,6 +77,24 @@ app.get('/api/users', async (_, res) => {
   }
 });
 
+// Plaid test endpoint
+
+app.get('/api/plaid/institutions-test', async (_req, res) => {
+  try {
+    const countryCodes = ['US'] as CountryCode[];
+    const resp = await plaidClient.institutionsGet({
+      count: 1,
+      offset: 0,
+      country_codes: countryCodes,
+    });
+    res.json({ ok: true, institution: resp.data.institutions[0] });
+  } catch (err: unknown) {
+    const details = err instanceof Error ? err : new Error(String(err));
+    console.error('Plaid ping failed:', details);
+    res.status(500).json({ ok: false, error: details });
+  }
+});
+
 export const startServer = () => {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);
@@ -82,5 +103,8 @@ export const startServer = () => {
     console.log('- http://localhost:3001/api/test');
     console.log('- http://localhost:3001/api/db-test');
     console.log('- http://localhost:3001/api/users [GET, POST]');
+    console.log('- http://localhost:3001/api/plaid/ping');
+    console.log('- http://localhost:3001/api/plaid/institutions-test');
+
   });
 };
