@@ -1,15 +1,19 @@
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import SignUp from './SignUp';
+import Dashboard from './Dashboard';
 
 function App() {
-
   return (
-    <div className="login-container">
-      <h1>MOBILE FINANCERS</h1>
-      <input type="text" placeholder="Username" />
-      <input type="password" placeholder="Password" />
-      <button>Log In</button>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
