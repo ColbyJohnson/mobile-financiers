@@ -10,6 +10,10 @@ cd apps/web
 
 npm install
 
+# Install react-router-dom
+
+npm install react-router-dom
+
 # Install supabase
 
 npm install @supabase/supabase-js
