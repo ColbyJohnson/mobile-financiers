@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from './config/supabase';
 
+// ...existing code...
 const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
 
 type Account = {
@@ -16,8 +18,10 @@ type Account = {
 };
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -44,9 +48,33 @@ export default function Dashboard() {
     })();
   }, []);
 
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error('Sign out failed:', err);
+      setSigningOut(false);
+    }
+  };
+
   return (
     <div style={{ maxWidth: 900, margin: '1rem auto', padding: '1rem' }}>
-      <h2>Welcome to your Dashboard</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>Welcome to your Dashboard</h2>
+        <div>
+          <button
+            onClick={handleSignOut}
+            disabled={signingOut}
+            style={{ padding: '8px 12px', borderRadius: 6 }}
+          >
+            {signingOut ? 'Signing out...' : 'Sign out'}
+          </button>
+        </div>
+      </div>
+
       <p>Below are your linked accounts (from Plaid):</p>
 
       {loading && <div>Loading accounts...</div>}
