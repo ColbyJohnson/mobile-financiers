@@ -4,6 +4,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import Dashboard from './Dashboard';
 import ChatPage from './Chat';
+import PlaidConnect from './PlaidConnect';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/chat" element={<ChatPage />} /> {/* <-- new route */}
+        <Route path="/chat" element={<ChatPage />} /> 
+        <Route path="/plaid" element={<PlaidConnect />} />  
       </Routes>
     </Router>
   );

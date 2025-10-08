@@ -19,6 +19,7 @@
     "plaid": "^38.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-plaid-link": "^4.1.1",
     "react-router-dom": "^7.9.3"
   },
   "devDependencies": {
