@@ -1,34 +1,47 @@
-import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Login';
+import SignUp from './SignUp';
+import Dashboard from './Dashboard';
+import ChatPage from './Chat';
+import PlaidConnect from './PlaidConnect';
+import ProtectedRoute from './ProtectedRoute';
 
-const App: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
+function App() {
   return (
-    <div className="login-container">
-      <h1>MOBILE FINANCERS</h1>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
 
-      <input type="text" placeholder="Username" />
-
-      <div className="password-wrapper">
-        <input
-          type={showPassword ? "text" : "password"}
-          placeholder="Password"
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
-        <button
-          type="button"
-          className="toggle-btn"
-          onClick={() => setShowPassword(!showPassword)}
-        >
-          {showPassword ? <FaEyeSlash /> : <FaEye />}
-        </button>
-      </div>
-
-      <button className="login-btn">Log In</button>
-    </div>
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/plaid"
+          element={
+            <ProtectedRoute>
+              <PlaidConnect />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;
-
