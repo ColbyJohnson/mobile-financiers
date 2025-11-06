@@ -1,0 +1,122 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #1a73e8, #4fc3f7);
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.auth-container h1 {
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: #1a73e8;
+  letter-spacing: 1.5px;
+}
+
+.auth-container input {
+  flex: 1;
+  width: 92%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.auth-container input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 4px rgba(26, 115, 232, 0.5);
+}
+
+.auth-container button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.75rem;
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.auth-container button:hover {
+  background: #1669c1;
+}
+
+.password-row {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.password-row input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.toggle-btn {
+  width: 35px;           
+  height: 35px;          
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-left: none;   
+  border-radius: 0 8px 8px 0;
+  background: #f9f9f9;
+  padding: 0;          
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  background: #eef3fc;
+  color: #1669c1;
+}
+
+
+.page-container {
+  padding: 2rem;
+  color: #333;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a73e8;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
