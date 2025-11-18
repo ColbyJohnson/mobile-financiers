@@ -17,6 +17,7 @@
     "@google/generative-ai": "^0.24.1",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
+    "@mui/x-charts": "^8.18.0",
     "@supabase/supabase-js": "^2.77.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
