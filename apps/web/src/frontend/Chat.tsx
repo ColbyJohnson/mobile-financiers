@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from './config/supabase';
+import NavBar from './NavBar';
 
 type Msg = { id: string; sender: 'user' | 'assistant'; text: string };
 
@@ -59,39 +60,41 @@ export default function ChatPage() {
   if (loadingSession) return <div>Checking session...</div>;
 
   return (
-    <div style={{ maxWidth: 720, margin: '1rem auto', padding: '1rem', background: 'rgba(255,255,255,0.9)', borderRadius: 8 }}>
-      <h2>Chat</h2>
-      <div style={{ height: 360, overflow: 'auto', border: '1px solid #ddd', padding: 12, borderRadius: 6, background: '#fff' }}>
-        {messages.length === 0 && <div style={{ color: '#777' }}>No messages yet. Say hello!</div>}
-        {messages.map((m) => (
-          <div key={m.id} style={{ margin: '8px 0', textAlign: m.sender === 'user' ? 'right' : 'left' }}>
-            <div style={{
-              display: 'inline-block',
-              padding: '8px 12px',
-              borderRadius: 16,
-              background: m.sender === 'user' ? '#0b5cff' : '#f1f1f1',
-              color: m.sender === 'user' ? '#fff' : '#111',
-              maxWidth: '80%',
-              whiteSpace: 'pre-wrap'
-            }}>
-              {m.text}
+    <>
+      <NavBar />
+      <div style={{ maxWidth: 720, margin: '1rem auto', padding: '1rem', background: 'rgba(255,255,255,0.9)', borderRadius: 8 }}>
+        <h2>Chat</h2>
+        <div style={{ height: 360, overflow: 'auto', border: '1px solid #ddd', padding: 12, borderRadius: 6, background: '#fff' }}>
+          {messages.length === 0 && <div style={{ color: '#777' }}>No messages yet. Say hello!</div>}
+          {messages.map((m) => (
+            <div key={m.id} style={{ margin: '8px 0', textAlign: m.sender === 'user' ? 'right' : 'left' }}>
+              <div style={{
+                display: 'inline-block',
+                padding: '8px 12px',
+                borderRadius: 16,
+                background: m.sender === 'user' ? '#0b5cff' : '#f1f1f1',
+                color: m.sender === 'user' ? '#fff' : '#111',
+                maxWidth: '80%',
+                whiteSpace: 'pre-wrap'
+              }}>
+                {m.text}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
+            placeholder="Type a message..."
+            style={{ flex: 1, padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc' }}
+          />
+          <button onClick={send} disabled={sending} style={{ padding: '8px 12px', borderRadius: 6 }}>
+            {sending ? 'Sending...' : 'Send'}
+          </button>
+        </div>
       </div>
-
-      <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
-          placeholder="Type a message..."
-          style={{ flex: 1, padding: '8px 12px', borderRadius: 6, border: '1px solid #ccc' }}
-        />
-        <button onClick={send} disabled={sending} style={{ padding: '8px 12px', borderRadius: 6 }}>
-          {sending ? 'Sending...' : 'Send'}
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
