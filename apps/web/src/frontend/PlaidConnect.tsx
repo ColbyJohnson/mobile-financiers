@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { usePlaidLink } from 'react-plaid-link';
 import type { PlaidLinkOptions } from 'react-plaid-link';
 import { supabase } from './config/supabase';
-import NavBar from './NavBar';
 
 const apiUrl = import.meta.env.VITE_API_URL ?? 'http://localhost:3001';
 
@@ -81,23 +80,20 @@ export default function PlaidConnect() {
   const { open, ready } = usePlaidLink(config);
 
   return (
-    <>
-      <NavBar />
-      <div style={{ maxWidth: 720, margin: '1rem auto', padding: 16 }}>
-        <h2>Connect your bank (Plaid)</h2>
-        {loading && <div>Preparing Plaid Link...</div>}
-        {status && <div style={{ margin: '8px 0', color: '#333' }}>{status}</div>}
-        <button
-          onClick={() => open()}
-          disabled={!ready || !linkToken || loading}
-          style={{ padding: '8px 12px', borderRadius: 6 }}
-        >
-          {ready && linkToken ? 'Connect bank' : 'Loading...'}
-        </button>
-        <p style={{ marginTop: 12, color: '#666' }}>
-          Use Plaid sandbox credentials after clicking Connect (e.g. sandbox username/password shown in Plaid docs).
-        </p>
-      </div>
-    </>
+    <div style={{ maxWidth: 720, margin: '1rem auto', padding: 16 }}>
+      <h2>Connect your bank (Plaid)</h2>
+      {loading && <div>Preparing Plaid Link...</div>}
+      {status && <div style={{ margin: '8px 0', color: '#333' }}>{status}</div>}
+      <button
+        onClick={() => open()}
+        disabled={!ready || !linkToken || loading}
+        style={{ padding: '8px 12px', borderRadius: 6 }}
+      >
+        {ready && linkToken ? 'Connect bank' : 'Loading...'}
+      </button>
+      <p style={{ marginTop: 12, color: '#666' }}>
+        Use Plaid sandbox credentials after clicking Connect (e.g. sandbox username/password shown in Plaid docs).
+      </p>
+    </div>
   );
 }

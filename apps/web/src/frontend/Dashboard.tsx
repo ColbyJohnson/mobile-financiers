@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "./config/supabase";
-import NavBar from "./NavBar";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -87,131 +86,128 @@ export default function Dashboard() {
   ];
 
   return (
-    <>
-      <NavBar />
-      <Box sx={{ maxWidth: 1500, mx: "auto", p: 3 }}>
-        {/* Header */}
-        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-          <Typography variant="h4" fontWeight="bold">
-            Dashboard
-          </Typography>
+    <div style={{ maxWidth: 900, margin: "1rem auto", padding: "1rem" }}>
+      {/* Header */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+        <Typography variant="h4" fontWeight="bold">
+          Dashboard
+        </Typography>
 
-          <Button variant="outlined" onClick={handleSignOut} disabled={signingOut}>
-            {signingOut ? "Signing out..." : "Sign out"}
-          </Button>
-        </Box>
+        <Button variant="outlined" onClick={handleSignOut} disabled={signingOut}>
+          {signingOut ? "Signing out..." : "Sign out"}
+        </Button>
+      </Box>
 
-        {/* Main Grid */}
-        <Grid container spacing={3}>
-          {/* Account Distribution Pie */}
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 400 }}>
-              <Typography variant="h6" mb={2}>
-                Account Distribution
-              </Typography>
-              {loading ? (
-                <CircularProgress />
-              ) : accounts.length === 0 ? (
-                <Typography>No accounts linked.</Typography>
-              ) : (
-                <PieChart
-                  series={[
-                    {
-                      type: "pie",
-                      data: pieData.map((d) => ({ id: d.id, value: d.value })),
-                    },
-                  ]}
-                />
-              )}
-            </Paper>
-          </Grid>
-
-          {/* Budget Health */}
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 400, textAlign: "center" }}>
-              <Typography variant="h6" mb={2}>
-                Budget Health
-              </Typography>
-              <CircularProgress
-                size={160}
-                thickness={4}
-                value={75}
-                variant="determinate"
-              />
-              <Typography sx={{ mt: 2 }} variant="h5">
-                75% Healthy
-              </Typography>
-            </Paper>
-          </Grid>
-
-          {/* Cash Flow Summary */}
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 400 }}>
-              <Typography variant="h6" mb={2}>
-                Cash Flow Summary
-              </Typography>
-              <BarChart
+      {/* Main Grid */}
+      <Grid container spacing={3}>
+        {/* Account Distribution Pie */}
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 3, height: 400 }}>
+            <Typography variant="h6" mb={2}>
+              Account Distribution
+            </Typography>
+            {loading ? (
+              <CircularProgress />
+            ) : accounts.length === 0 ? (
+              <Typography>No accounts linked.</Typography>
+            ) : (
+              <PieChart
                 series={[
-                  { 
-                    type: "bar", 
-                    data: cashFlow.map((d) => d.income), 
-                    label: "Income" 
-                  },
-                  { 
-                    type: "bar", 
-                    data: cashFlow.map((d) => d.expenses), 
-                    label: "Expenses" 
+                  {
+                    type: "pie",
+                    data: pieData.map((d) => ({ id: d.id, value: d.value })),
                   },
                 ]}
-              
-              >
-                
-              </BarChart>
-            </Paper>
-          </Grid>
-
-          {/* Budget Goals */}
-          <Grid xs={12} md={6}>
-            <Paper sx={{ p: 3, height: 400 }}>
-              <Typography variant="h6" mb={2}>
-                Budget Goals
-              </Typography>
-              <List>
-                <ListItem>
-                  <ListItemText primary="Emergency Fund" />
-                  <Box sx={{ width: "40%" }}>
-                    <LinearProgress variant="determinate" value={60} />
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Monthly Savings" />
-                  <Box sx={{ width: "40%" }}>
-                    <LinearProgress variant="determinate" value={40} />
-                  </Box>
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="Debt Payoff" />
-                  <Box sx={{ width: "40%" }}>
-                    <LinearProgress variant="determinate" value={20} />
-                  </Box>
-                </ListItem>
-              </List>
-            </Paper>
-          </Grid>
-
-          {/* Recommendations / Alerts */}
-          <Grid item xs={12}>
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" mb={2}>
-                Recommendations & Alerts
-              </Typography>
-              <Typography>- You are overspending in Dining by 14%.</Typography>
-              <Typography>- Consider increasing your savings rate by 5%.</Typography>
-              <Typography>- Your subscription expenses rose this month.</Typography>
-            </Paper>
-          </Grid>
+              />
+            )}
+          </Paper>
         </Grid>
-      </Box>
-    </>
+
+        {/* Budget Health */}
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 3, height: 400, textAlign: "center" }}>
+            <Typography variant="h6" mb={2}>
+              Budget Health
+            </Typography>
+            <CircularProgress
+              size={160}
+              thickness={4}
+              value={75}
+              variant="determinate"
+            />
+            <Typography sx={{ mt: 2 }} variant="h5">
+              75% Healthy
+            </Typography>
+          </Paper>
+        </Grid>
+
+        {/* Cash Flow Summary */}
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ p: 3, height: 400 }}>
+            <Typography variant="h6" mb={2}>
+              Cash Flow Summary
+            </Typography>
+            <BarChart
+              series={[
+                { 
+                  type: "bar", 
+                  data: cashFlow.map((d) => d.income), 
+                  label: "Income" 
+                },
+                { 
+                  type: "bar", 
+                  data: cashFlow.map((d) => d.expenses), 
+                  label: "Expenses" 
+                },
+              ]}
+            
+            >
+              
+            </BarChart>
+          </Paper>
+        </Grid>
+
+        {/* Budget Goals */}
+        <Grid xs={12} md={6}>
+          <Paper sx={{ p: 3, height: 400 }}>
+            <Typography variant="h6" mb={2}>
+              Budget Goals
+            </Typography>
+            <List>
+              <ListItem>
+                <ListItemText primary="Emergency Fund" />
+                <Box sx={{ width: "40%" }}>
+                  <LinearProgress variant="determinate" value={60} />
+                </Box>
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Monthly Savings" />
+                <Box sx={{ width: "40%" }}>
+                  <LinearProgress variant="determinate" value={40} />
+                </Box>
+              </ListItem>
+              <ListItem>
+                <ListItemText primary="Debt Payoff" />
+                <Box sx={{ width: "40%" }}>
+                  <LinearProgress variant="determinate" value={20} />
+                </Box>
+              </ListItem>
+            </List>
+          </Paper>
+        </Grid>
+
+        {/* Recommendations / Alerts */}
+        <Grid item xs={12}>
+          <Paper sx={{ p: 3 }}>
+            <Typography variant="h6" mb={2}>
+              Recommendations & Alerts
+            </Typography>
+            <Typography>- You are overspending in Dining by 14%.</Typography>
+            <Typography>- Consider increasing your savings rate by 5%.</Typography>
+            <Typography>- Your subscription expenses rose this month.</Typography>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 }

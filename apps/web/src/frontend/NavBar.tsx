@@ -28,8 +28,25 @@ export default function NavBar() {
   });
 
   return (
-    <nav style={{ position: 'sticky', top: 0, zIndex: 10, background: 'rgba(255,255,255,0.9)', borderBottom: '1px solid #eaeaea', backdropFilter: 'saturate(180%) blur(8px)' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '10px 16px', display: 'flex', gap: 8 }}>
+    <nav
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 100,
+        background: '#ffffffcc',
+        backdropFilter: 'blur(8px)',
+        borderBottom: '1px solid #e5e5e5',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: 1100,
+          margin: '0 auto',
+          padding: '10px 20px',
+          display: 'flex',
+          gap: 12,
+        }}
+      >
         <NavLink to="/dashboard" style={linkStyle}>Dashboard</NavLink>
         <NavLink to="/chat" style={linkStyle}>Chat</NavLink>
         <NavLink to="/plaid" style={linkStyle}>Plaid</NavLink>
