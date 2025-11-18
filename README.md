@@ -14,6 +14,12 @@ npm install
 
 npm install @supabase/supabase-js
 
+# Install MUI
+npm install @mui/material @emotion/react @emotion/styled
+npm install @fontsource/roboto
+npm install @mui/icons-material
+npm install @mui/x-charts
+
 # Start the dev server
 
 npm run dev
