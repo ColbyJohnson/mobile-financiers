@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { supabase } from './config/supabase';
 import { userService } from './services/userService'; // Make sure this path is correct
+import { buildPlaidContext } from './services/chatService';
 import {
   createSandboxPublicToken,
   createLinkToken,
@@ -248,7 +249,27 @@ app.get('/api/gemini/stream', async (req, res) => {
     res.end();
     }
 });
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { prompt, user_id } = req.body as { prompt?: string; user_id?: string };
+    if (!prompt) return res.status(400).json({ ok: false, error: 'missing prompt' });
 
+    const context = user_id ? await buildPlaidContext(user_id) : '';
+    const systemInstr = `You are a concise financial assistant. Answer in 2-4 short sentences or up to 3 short bullet points. Use the provided account context when relevant and do not invent numbers.`;
+
+    const fullPrompt = `${systemInstr}\n\nContext:\n${context || 'No account context available.'}\n\nUser: ${prompt}`;
+
+    const model = gemini.getGenerativeModel({ model: GEMINI_MODEL, safetySettings: safety });
+    // low temperature and reasonable token cap are handled by prompt+model selection; if your SDK supports options, add them here.
+    const out = await model.generateContent(fullPrompt);
+    const text = out?.response?.text?.() ?? '';
+
+    res.json({ ok: true, text: text.trim() });
+  } catch (err: unknown) {
+    console.error('chat endpoint error:', err);
+    res.status(500).json({ ok: false, error: err instanceof Error ? err.message : String(err) });
+  }
+});
 export const startServer = () => {
   app.listen(port, () => {
     console.log(`Server running on port ${port}`);

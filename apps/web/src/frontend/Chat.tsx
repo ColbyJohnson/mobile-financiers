@@ -36,19 +36,18 @@ export default function ChatPage() {
     setSending(true);
 
     try {
-      // Simple non-streaming call to backend LLM endpoint
-      const res = await fetch(`${apiUrl}/api/gemini/generate`, {
+      const { data } = await supabase.auth.getSession();
+      const userId = data?.session?.user?.id;
+      const res = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: text }),
+        body: JSON.stringify({ prompt: text, user_id: userId }),
       });
       const json = await res.json();
       if (!res.ok) {
-        const err = json?.error ?? json;
-        pushMessage({ id: String(Date.now()) + '-e', sender: 'assistant', text: `Error: ${err}` });
+        pushMessage({ id: String(Date.now()) + '-e', sender: 'assistant', text: `Error: ${json?.error ?? 'Chat failed'}` });
       } else {
-        const assistantText = json.text ?? (json?.result ?? JSON.stringify(json));
-        pushMessage({ id: String(Date.now()) + '-a', sender: 'assistant', text: assistantText });
+        pushMessage({ id: String(Date.now()) + '-a', sender: 'assistant', text: json.text ?? 'No response' });
       }
     } catch (err) {
       pushMessage({ id: String(Date.now()) + '-e', sender: 'assistant', text: String(err) });
