@@ -18,14 +18,14 @@ npm install react-router-dom
 
 npm install @supabase/supabase-js
 
-# Start the dev server
-
-npm run dev
 
 # Start db and backend server
 
 npm run server
 
+# Start the web app
+
+npm run dev
 
 
 
