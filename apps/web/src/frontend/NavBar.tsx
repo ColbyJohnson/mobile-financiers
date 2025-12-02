@@ -50,6 +50,7 @@ export default function NavBar() {
         <NavLink to="/dashboard" style={linkStyle}>Dashboard</NavLink>
         <NavLink to="/chat" style={linkStyle}>Chat</NavLink>
         <NavLink to="/plaid" style={linkStyle}>Plaid</NavLink>
+        <NavLink to="/settings" style={linkStyle}>Settings</NavLink>
       </div>
     </nav>
   );

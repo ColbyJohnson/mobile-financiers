@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { keyframes } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
+import { useSettings } from './SettingsGlobal';
 
 type Msg = { id: string; sender: 'user' | 'assistant'; text: string };
 
@@ -44,6 +46,10 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const theme = useTheme();
+  const { highContrast } = useSettings();
+  const isDarkMode = theme.palette.mode === 'dark';
 
   useEffect(() => {
     (async () => {
@@ -124,27 +130,31 @@ export default function ChatPage() {
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        bgcolor: '#fafafa',
+        bgcolor: highContrast
+          ? '#000'
+          : isDarkMode
+          ? theme.palette.background.default
+          : theme.palette.background.default,
       }}
     >
-      {/* Header - Fixed at top */}
+      {/* Header */}
       <Box
         sx={{
-          bgcolor: 'white',
-          borderBottom: '1px solid #e0e0e0',
+          bgcolor: highContrast ? '#000' : isDarkMode ? theme.palette.background.paper : '#fff',
+          borderBottom: `1px solid ${highContrast ? '#fff' : theme.palette.divider}`,
           px: 4,
           py: 2.5,
         }}
       >
-        <Typography variant="h5" fontWeight={600} sx={{ mb: 0.5 }}>
+        <Typography variant="h5" fontWeight={600} sx={{ mb: 0.5, color: highContrast ? '#fff' : 'inherit' }}>
           AI Financial Assistant
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color={highContrast ? '#fff' : 'text.secondary'}>
           Ask questions about your accounts, spending, or get financial advice
         </Typography>
       </Box>
 
-      {/* Messages Area - Scrollable */}
+      {/* Messages Area */}
       <Box
         sx={{
           flexGrow: 1,
@@ -165,10 +175,10 @@ export default function ChatPage() {
                 justifyContent: 'center',
                 height: '50vh',
                 textAlign: 'center',
-                color: 'text.secondary',
+                color: highContrast ? '#fff' : 'text.secondary',
               }}
             >
-              <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>
+              <Typography variant="h6" sx={{ mb: 1, color: highContrast ? '#fff' : 'text.primary' }}>
                 Welcome to your Financial Assistant
               </Typography>
               <Typography variant="body2">
@@ -191,11 +201,27 @@ export default function ChatPage() {
                 sx={{
                   p: 2,
                   maxWidth: '75%',
-                  bgcolor: m.sender === 'user' ? '#0b5cff' : '#fff',
-                  color: m.sender === 'user' ? '#fff' : '#1a1a1a',
+                  bgcolor:
+                    m.sender === 'user'
+                      ? isDarkMode
+                        ? '#0b5cff'
+                        : '#0b5cff'
+                      : highContrast
+                      ? '#000'
+                      : isDarkMode
+                      ? theme.palette.background.paper
+                      : '#fff',
+                  color:
+                    m.sender === 'user'
+                      ? '#fff'
+                      : highContrast
+                      ? '#fff'
+                      : isDarkMode
+                      ? theme.palette.text.primary
+                      : '#1a1a1a',
                   borderRadius: 3,
                   wordWrap: 'break-word',
-                  border: m.sender === 'assistant' ? '1px solid #e0e0e0' : 'none',
+                  border: m.sender === 'assistant' ? `1px solid ${highContrast ? '#fff' : theme.palette.divider}` : 'none',
                 }}
               >
                 <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
@@ -211,9 +237,9 @@ export default function ChatPage() {
                 elevation={0}
                 sx={{
                   p: 1.5,
-                  bgcolor: '#fff',
+                  bgcolor: highContrast ? '#000' : theme.palette.background.paper,
                   borderRadius: 3,
-                  border: '1px solid #e0e0e0',
+                  border: `1px solid ${highContrast ? '#fff' : theme.palette.divider}`,
                   display: 'flex',
                   alignItems: 'center',
                 }}
@@ -227,11 +253,11 @@ export default function ChatPage() {
         </Box>
       </Box>
 
-      {/* Input Area - Fixed at bottom */}
+      {/* Input Area */}
       <Box
         sx={{
-          bgcolor: 'white',
-          borderTop: '1px solid #e0e0e0',
+          bgcolor: highContrast ? '#000' : theme.palette.background.paper,
+          borderTop: `1px solid ${highContrast ? '#fff' : theme.palette.divider}`,
           px: 4,
           py: 2,
         }}
@@ -254,17 +280,14 @@ export default function ChatPage() {
             maxRows={4}
             sx={{
               '& .MuiOutlinedInput-root': {
-                bgcolor: '#fafafa',
+                bgcolor: highContrast ? '#000' : theme.palette.background.paper,
                 borderRadius: 3,
-                '& fieldset': {
-                  borderColor: '#e0e0e0',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#bdbdbd',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#0b5cff',
-                },
+                '& fieldset': { borderColor: highContrast ? '#fff' : theme.palette.divider },
+                '&:hover fieldset': { borderColor: highContrast ? '#fff' : theme.palette.text.secondary },
+                '&.Mui-focused fieldset': { borderColor: highContrast ? '#fff' : theme.palette.primary.main },
+              },
+              '& .MuiInputBase-input': {
+                color: highContrast ? '#fff' : 'inherit',
               },
             }}
           />
@@ -277,13 +300,8 @@ export default function ChatPage() {
               width: 56,
               height: 56,
               borderRadius: 3,
-              '&:hover': {
-                bgcolor: '#0a4fd6',
-              },
-              '&:disabled': {
-                bgcolor: '#e0e0e0',
-                color: '#9e9e9e',
-              },
+              '&:hover': { bgcolor: '#0a4fd6' },
+              '&:disabled': { bgcolor: '#e0e0e0', color: '#9e9e9e' },
             }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
